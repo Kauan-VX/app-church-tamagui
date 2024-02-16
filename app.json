@@ -3,6 +3,7 @@
     "name": "church-app",
     "slug": "church-app",
     "version": "1.0.0",
+    "jsEngine": "hermes",
 
     "scheme": "church-app",
     "web": {

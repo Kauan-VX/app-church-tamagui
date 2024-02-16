@@ -1,5 +1,5 @@
 import { Feather } from '@expo/vector-icons';
-import { Stack, useRouter, useLocalSearchParams } from 'expo-router';
+import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import React from 'react';
 import { Button, Text, YStack } from 'tamagui';
 
@@ -17,8 +17,10 @@ export default function Details() {
       paddingLeft={0}
       pressStyle={{ opacity: 0.5 }}
       onPress={router.back}
-      icon={<Feather name="chevron-left" size={16} color="#007AFF" />}>
-      <Text color="#007AFF">Back</Text>
+      icon={<Feather name="chevron-left" size={20} color="black" />}>
+      <Text fontSize="$7" color="black">
+        Voltar
+      </Text>
     </Button>
   );
 
