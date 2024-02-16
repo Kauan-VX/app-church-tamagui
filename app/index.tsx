@@ -10,9 +10,9 @@ import CardLogin from './components/card-login';
 const schema = z.object({
   email: z
     .string()
-    .min(1, { message: 'Email obrigatório' })
+    .min(1, { message: 'Este campo é obrigatório' }) // Alteração aqui
     .email({ message: 'Deve ser um endereço de email válido' }),
-  password: z.string().min(6, { message: 'Senha obrigatória' }),
+  password: z.string().min(6, { message: 'Este campo é obrigatório' }), // Alteração aqui
 });
 
 type IForm = z.infer<typeof schema>;
