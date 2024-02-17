@@ -1,5 +1,7 @@
+import { ToastProvider, ToastViewport } from '@tamagui/toast';
 import { useFonts } from 'expo-font';
 import { StatusBar } from 'expo-status-bar';
+import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Input, TamaguiProvider } from 'tamagui';
 
@@ -16,11 +18,14 @@ export default function App() {
   }
   return (
     <TamaguiProvider config={config}>
-      <View style={styles.container}>
-        <Input size="$4" borderWidth={2} />
-        <Text>Open up App.tsx to start working on your app!</Text>
-        <StatusBar style="auto" />
-      </View>
+      <ToastProvider>
+        <View style={styles.container}>
+          <Input size="$4" borderWidth={2} />
+          <Text>Open up App.tsx to start working on your app!</Text>
+          <StatusBar style="auto" />
+        </View>
+        <ToastViewport name="viewport-custom" />
+      </ToastProvider>
     </TamaguiProvider>
   );
 }
