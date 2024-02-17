@@ -1,35 +1,29 @@
-import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
-import { Link, Stack } from 'expo-router';
+import { Link, router } from 'expo-router';
 import md5 from 'md5';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { Alert } from 'react-native';
 import { Input, Text, View, XStack, YStack } from 'tamagui';
-import { z } from 'zod';
 
 import { Button, ButtonText, Container, Main, Subtitle, Title } from '../tamagui.config';
 import CardLogin from './components/card-login';
 import { IToken } from './models/user';
 
-const schema = z.object({
-  username: z
-    .string()
-    .min(1, { message: 'Este campo é obrigatório' }) // Alteração aqui
-    .email({ message: 'Deve ser um endereço de email válido' }),
-  password: z.string().min(1, { message: 'Este campo é obrigatório' }), // Alteração aqui
-});
+type LoginForm = {
+  username: string;
+  password: string;
+};
 
-type IForm = z.infer<typeof schema>;
 export default function Page() {
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<IForm>({
-    resolver: zodResolver(schema),
+  const { control, handleSubmit, formState } = useForm<LoginForm>({
+    mode: 'onChange',
+    defaultValues: {
+      username: '',
+      password: '',
+    },
   });
 
-  const handleLogin: SubmitHandler<IForm> = async (data) => {
+  const handleLogin: SubmitHandler<LoginForm> = async (data) => {
     try {
       const { username, password } = data;
       const passwordMD5 = md5(password).toString().toUpperCase();
@@ -39,6 +33,7 @@ export default function Page() {
       });
       if (response.status === 200) {
         console.log('Login bem-sucedido:', response.data);
+        router.navigate('/news');
       } else {
         Alert.alert('Erro', 'Não foi possível fazer login. Verifique suas credenciais.');
       }
@@ -63,14 +58,14 @@ export default function Page() {
   return (
     <Container padding="0">
       <Main backgroundColor="black">
-        <Stack.Screen options={{ title: 'Teste' }} />
         <YStack
           padding={24}
           display="flex"
           flexDirection="column"
           justifyContent="center"
           alignItems="center"
-          flex={1}>
+          flex={1}
+        >
           <Title color="white">Bem-Vindo</Title>
           <Subtitle textAlign="center" color="white">
             Este App foi feito para facilitar sua rotina
@@ -82,13 +77,10 @@ export default function Page() {
           flex={2}
           flexWrap="wrap"
           borderRadius={36}
-          backgroundColor="white">
+          backgroundColor="white"
+        >
           <View padding="$-14" height="100%" width="100%">
             <YStack gap={8}>
-              <Text paddingLeft={10} fontWeight="bold" fontSize="$6">
-                E-mail
-              </Text>
-
               <Controller
                 control={control}
                 name="username"
@@ -109,11 +101,6 @@ export default function Page() {
                 )}
               />
 
-              {errors.username && (
-                <Text paddingLeft={10} color="red" fontWeight="400">
-                  {errors.username?.message}
-                </Text>
-              )}
               <Text paddingLeft={10} fontWeight="bold" fontSize="$6">
                 Senha
               </Text>
@@ -136,21 +123,16 @@ export default function Page() {
                   />
                 )}
               />
-              {errors.password && (
-                <Text paddingLeft={10} color="red" fontWeight="400">
-                  {' '}
-                  {errors.password?.message}
-                </Text>
-              )}
             </YStack>
 
-            <Link href={{ pathname: '/details', params: { name: 'Dan' } }} asChild>
+            <Link href={{ pathname: '/(tabs)/news', params: { name: 'Dan' } }} asChild>
               <Button marginLeft="auto" backgroundColor="$colorTransparent">
                 <ButtonText
                   textDecorationLine="underline"
                   color="black"
                   fontWeight="700"
-                  fontSize="$3">
+                  fontSize="$3"
+                >
                   Recuperar senha
                 </ButtonText>
               </Button>
@@ -166,7 +148,8 @@ export default function Page() {
               marginBottom={24}
               marginTop={24}
               fontWeight="700"
-              fontSize="$6">
+              fontSize="$6"
+            >
               Ou
             </Text>
             <XStack display="flex" width="100%" justifyContent="center" gap="$-13">

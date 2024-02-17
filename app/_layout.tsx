@@ -27,7 +27,6 @@ export default function Layout() {
             backgroundColor: '#fff',
           },
           headerTintColor: '#000',
-          // header: () => <User />,
         }}
       />
     </TamaguiProvider>
